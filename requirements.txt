@@ -1,11 +1,15 @@
-telethon==1.36.0
+Telethon==1.30.3
 telethon-session-sqlalchemy
 setuptools
 wheel
+gunicorn
+flask
+flask_restful
 aiocsv
 aiofiles
 aiohttp
 aiosqlite
+arabic_reshaper
 beautifulsoup4
 cloudscraper
 colour
@@ -13,8 +17,6 @@ cowpy
 DateTime
 emoji
 ffmpeg-python
-flask
-flask_restful
 fonttools
 geopy
 gitpython
@@ -27,7 +29,6 @@ heroku3
 html-telegraph-poster
 httpx[http2]
 humanize
-IMDbPY
 ipaddress
 jikanpy
 justwatch
@@ -43,7 +44,6 @@ Pillow
 prettytable
 psutil
 psycopg2-binary
-psycopg2
 py-tgcalls==2.0.2
 pyfiglet
 PyGithub
@@ -58,6 +58,7 @@ python-dotenv
 pytz
 qrcode
 regex
+requests
 search-engine-parser
 selenium
 spamwatch
@@ -66,7 +67,6 @@ sqlalchemy-json
 sqlalchemy==1.3.23
 telegraph
 tgcrypto
-Tgcrypto
 ujson
 urlextract
 user_agent
@@ -74,9 +74,9 @@ validators
 vcsi
 wand
 wget==3.2
-img2html
-googletrans-py
 youtube-search-python==1.4.9
 youtube-search
 youtube_dl
-yt_dlp==2024.05.27
+yt-dlp==2024.4.9
+img2html
+googletrans-py
