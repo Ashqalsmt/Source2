@@ -3,16 +3,9 @@ import asyncio
 import requests
 import logging
 
-from telethon import events, Button, functions
-from telethon.tl import functions, types
-from telethon.errors.rpcerrorlist import UserNotParticipantError
-from telethon.tl.functions.channels import EditBannedRequest, GetFullChannelRequest, GetParticipantRequest
+from telethon import events, Button
 from telethon.tl.functions.messages import ExportChatInviteRequest
-from telethon.tl.functions.users import GetFullUserRequest
-from telethon.tl.types import ChatBannedRights
-
-from yamenthon import zq_lo
-from yamenthon import BOTLOG_CHATID
+from yamenthon import zq_lo, BOTLOG_CHATID
 from ..sql_helper.globals import addgvar, delgvar, gvarstatus
 from ..Config import Config
 from ..core.managers import edit_delete, edit_or_reply
@@ -20,227 +13,142 @@ from ..core.logger import logging
 
 LOGS = logging.getLogger(__name__)
 plugin_category = "الادمن"
-cmdhd = Config.COMMAND_HAND_LER
 
 
+# تعيين قناة الاشتراك الاجباري للخاص
 @zq_lo.rep_cmd(pattern="(ضع الاشتراك خاص|وضع الاشتراك خاص)(?:\s|$)([\s\S]*)")
-async def _(event):
-    if input_str := event.pattern_match.group(2):
+async def set_private_channel(event):
+    input_str = event.pattern_match.group(2)
+    if input_str:
         try:
             p = await event.client.get_entity(input_str)
         except Exception as e:
             return await edit_delete(event, f"`{e}`", 5)
         try:
-            if p.first_name:
-                await asyncio.sleep(1.5)
-                delgvar("Custom_Pm_Channel")
-                addgvar("Custom_Pm_Channel", f"-100{p.id}")
-                return await edit_or_reply(
-                    event, f"**「❖╎تم إضافة قناة الاشتراك الاجباري للخاص .. بنجـاح ☑️**\n\n**「❖╎يوزر القناة : ↶** `{input_str}`\n**「❖╎ايدي القناة : ↶** `{p.id}`\n\n**「❖╎ارسـل الان** `.اشتراك خاص`"
-                )
-        except Exception:
-            try:
-                if p.title:
-                    await asyncio.sleep(1.5)
-                    delgvar("Custom_Pm_Channel")
-                    addgvar("Custom_Pm_Channel", f"-100{p.id}")
-                    return await edit_or_reply(
-                        event, f"**「❖╎تم إضافة قناة الاشتراك الاجباري للخاص .. بنجـاح ☑️**\n\n**「❖╎اسم القناة : ↶** `{p.title}`\n**「❖╎ايدي القناة : ↶** `{p.id}`\n\n**「❖╎ارسـل الان** `.اشتراك خاص`"
-                    )
-            except Exception as e:
-                LOGS.info(str(e))
-        await edit_or_reply(event, "⪼ **أدخل معـرف القناة او قم باستخدام الامر داخل القناة**")
+            channel_id = f"-100{p.id}"
+            delgvar("Custom_Pm_Channel")
+            addgvar("Custom_Pm_Channel", channel_id)
+            return await edit_or_reply(
+                event, f"**❖ تم تعيين قناة الاشتراك للخاص بنجاح\n\n• يوزر/اسم : `{input_str}`\n• ايدي : `{p.id}`\n\n• ارسل الآن `.اشتراك خاص`**"
+            )
+        except Exception as e:
+            LOGS.error(str(e))
+            return await edit_or_reply(event, "❖ خطأ في تعيين القناة")
     elif event.reply_to_msg_id:
-        r_msg = await event.get_reply_message()
-        if r_msg.media:
-            await asyncio.sleep(1.5)
-            delgvar("Custom_Pm_Channel")
-            addgvar("Custom_Pm_Channel", event.chat_id)
-            await edit_or_reply(
-                event,
-                f"**「❖╎تم إضافة قناة الاشتراك الاجباري للخاص .. بنجـاح ☑️**\n\n**「❖╎ايدي القناة : ↶** `{event.chat_id}`\n\n**「❖╎ارسـل الان** `.اشتراك خاص`",
-            )
-
-        else:
-            await asyncio.sleep(1.5)
-            delgvar("Custom_Pm_Channel")
-            addgvar("Custom_Pm_Channel", event.chat_id)
-            await edit_or_reply(
-                event,
-                f"**「❖╎تم إضافة قناة الاشتراك الاجباري للخاص .. بنجـاح ☑️**\n\n**「❖╎ايدي القناة : ↶** `{event.chat_id}`\n\n**「❖╎ارسـل الان** `.اشتراك خاص`",
-            )
-
-    else:
-        await asyncio.sleep(1.5)
         delgvar("Custom_Pm_Channel")
         addgvar("Custom_Pm_Channel", event.chat_id)
-        await edit_or_reply(event, f"**「❖╎تم إضافة قناة الاشتراك الاجباري للخاص .. بنجـاح ☑️**\n\n**「❖╎ايدي القناة : ↶** `{event.chat_id}`\n\n**「❖╎ارسـل الان** `.اشتراك خاص`")
+        return await edit_or_reply(event, f"**❖ تم تعيين قناة الاشتراك للخاص بنجاح\n\n• ايدي : `{event.chat_id}`\n• ارسل الآن `.اشتراك خاص`**")
+    else:
+        return await edit_or_reply(event, "❖ يرجى إدخال يوزر القناة أو الرد داخل القناة نفسها")
 
 
-
+# تعيين قناة الاشتراك الاجباري للكروب
 @zq_lo.rep_cmd(pattern="(ضع الاشتراك كروب|وضع الاشتراك كروب)(?:\s|$)([\s\S]*)")
-async def _(event):
-    if input_str := event.pattern_match.group(2):
+async def set_group_channel(event):
+    input_str = event.pattern_match.group(2)
+    if input_str:
         try:
             p = await event.client.get_entity(input_str)
         except Exception as e:
             return await edit_delete(event, f"`{e}`", 5)
         try:
-            if p.first_name:
-                await asyncio.sleep(1.5)
-                delgvar("Custom_G_Channel")
-                addgvar("Custom_G_Channel", f"-100{p.id}")
-                return await edit_or_reply(
-                    event, f"**「❖╎تم إضافة قناة الاشتراك الاجباري للكروب .. بنجـاح ☑️**\n\n**「❖╎يوزر القناة : ↶** `{input_str}`\n**「❖╎ايدي القناة : ↶** `{p.id}`\n\n**「❖╎ارسـل الان** `.اشتراك كروب`"
-                )
-        except Exception:
-            try:
-                if p.title:
-                    await asyncio.sleep(1.5)
-                    delgvar("Custom_G_Channel")
-                    addgvar("Custom_G_Channel", f"-100{p.id}")
-                    return await edit_or_reply(
-                        event, f"**「❖╎تم إضافة قناة الاشتراك الاجباري للكروب .. بنجـاح ☑️**\n\n**「❖╎اسم القناة : ↶** `{p.title}`\n**「❖╎ايدي القناة : ↶** `{p.id}`\n\n**「❖╎ارسـل الان** `.اشتراك كروب`"
-                    )
-            except Exception as e:
-                LOGS.info(str(e))
-        await edit_or_reply(event, "⪼ **أدخل إما اسم مستخدم أو الرد على المستخدم**")
+            channel_id = f"-100{p.id}"
+            delgvar("Custom_G_Channel")
+            addgvar("Custom_G_Channel", channel_id)
+            return await edit_or_reply(
+                event, f"**❖ تم تعيين قناة الاشتراك للكروب بنجاح\n\n• يوزر/اسم : `{input_str}`\n• ايدي : `{p.id}`\n\n• ارسل الآن `.اشتراك كروب`**"
+            )
+        except Exception as e:
+            LOGS.error(str(e))
+            return await edit_or_reply(event, "❖ خطأ في تعيين القناة")
     elif event.reply_to_msg_id:
-        r_msg = await event.get_reply_message()
-        if r_msg.media:
-            await asyncio.sleep(1.5)
-            delgvar("Custom_G_Channel")
-            addgvar("Custom_G_Channel", event.chat_id)
-            await edit_or_reply(
-                event,
-                f"**「❖╎تم إضافة قناة الاشتراك الاجباري للكروب .. بنجـاح ☑️**\n\n**「❖╎ايدي القناة : ↶** `{event.chat_id}`\n\n**「❖╎ارسـل الان** `.اشتراك كروب`",
-            )
-
-        else:
-            await asyncio.sleep(1.5)
-            delgvar("Custom_G_Channel")
-            addgvar("Custom_G_Channel", event.chat_id)
-            await edit_or_reply(
-                event,
-                f"**「❖╎تم إضافة قناة الاشتراك الاجباري للكروب .. بنجـاح ☑️**\n\n**「❖╎ايدي القناة : ↶** `{event.chat_id}`\n\n**「❖╎ارسـل الان** `.اشتراك كروب`",
-            )
+        delgvar("Custom_G_Channel")
+        addgvar("Custom_G_Channel", event.chat_id)
+        return await edit_or_reply(event, f"**❖ تم تعيين قناة الاشتراك للكروب بنجاح\n\n• ايدي : `{event.chat_id}`\n• ارسل الآن `.اشتراك كروب`**")
+    else:
+        return await edit_or_reply(event, "❖ يرجى إدخال يوزر القناة أو الرد داخل القناة")
 
 
+# تفعيل الاشتراك
 @zq_lo.rep_cmd(pattern="اشتراك")
-async def supc(event):
-    ty = event.text
-    ty = ty.replace(".اشتراك", "")
-    ty = ty.replace(" ", "")
-    if len (ty) < 2:
-        return await edit_delete(event, "**「❖╎اختـر نوع الاشتـراك الاجبـاري اولاً :**\n\n`.اشتراك كروب`\n\n`.اشتراك خاص`")
-    if ty == "كروب" or ty == "جروب" or  ty == "قروب" or  ty == "مجموعة" or  ty == "مجموعه":
+async def enable_subscription(event):
+    ty = event.text.replace(".اشتراك", "").strip()
+    group_types = ["كروب", "جروب", "قروب", "مجموعة", "مجموعه"]
+    if ty in group_types:
         if not event.is_group:
-            return await edit_delete("**「❖╎عـذراً .. هذه ليست مجمـوعـة ؟!**")
-        if event.is_group:
-            if gvarstatus ("sub_group") == event.chat_id:
-                return await edit_delete(event, "**「❖╎الاشتـراك الاجبـاري لـ هذه المجمـوعـة مفعـل مسبقـاً**")
-            if gvarstatus("sub_group"):
-                return await edit_or_reply(event, "**「❖╎الاشتـراك الاجبـاري مفعـل لـ مجمـوعة آخـرى**\n**「❖╎ارسل (.تعطيل كروب) لـ الغائـه وتفعيلـه هنـا**")
-            addgvar("sub_group", event.chat_id)
-            return await edit_or_reply(event, "**「❖╎تم تفعيل الاشتراك الاجباري لـ هذه المجموعة .. بنجـاح✓**")
-    if ty == "خاص":
-        if gvarstatus ("sub_private"):
-            return await edit_delete(event, "**「❖╎الاشتـراك الاجبـاري لـ الخـاص مفعـل مسبقـاً**")
-        if not gvarstatus ("sub_private"):
-            addgvar ("sub_private", True)
-            await edit_or_reply(event, "**「❖╎تم تفعيل الاشتراك الاجباري لـ الخـاص .. بنجـاح✓**")
-    if ty not in ["خاص", "كروب", "جروب", "قروب", "مجموعة", "مجموعه"]:
-        return await edit_delete(event, "**「❖╎اختـر نوع الاشتـراك الاجبـاري اولاً :**\n\n`.اشتراك كروب`\n\n`.اشتراك خاص`")
+            return await edit_delete(event, "❖ هذا الأمر يخص المجموعات فقط")
+        if gvarstatus("sub_group") == event.chat_id:
+            return await edit_delete(event, "❖ الاشتراك مفعّل بالفعل في هذه المجموعة")
+        if gvarstatus("sub_group"):
+            return await edit_or_reply(event, "❖ الاشتراك مفعل في مجموعة أخرى\n❖ أرسل `.تعطيل كروب` لإلغائه أولاً")
+        addgvar("sub_group", event.chat_id)
+        return await edit_or_reply(event, "✅ تم تفعيل الاشتراك الإجباري في هذه المجموعة")
+    elif ty == "خاص":
+        if gvarstatus("sub_private"):
+            return await edit_delete(event, "❖ الاشتراك في الخاص مفعل مسبقًا")
+        addgvar("sub_private", True)
+        return await edit_or_reply(event, "✅ تم تفعيل الاشتراك الإجباري في الخاص")
+    else:
+        return await edit_delete(event, "❖ حدد نوع الاشتراك:\n`.اشتراك كروب`\n`.اشتراك خاص`")
 
+
+# تعطيل الاشتراك
 @zq_lo.rep_cmd(pattern="تعطيل")
-async def supc (event):
-    cc = event.text.replace(".تعطيل", "")
-    cc = cc.replace(" ", "")
-    if cc == "كروب" or cc == "جروب" or  cc == "قروب" or  cc == "مجموعة" or  cc == "مجموعه" or cc == "الكروب" or cc == "اشتراك الكروب":
-        if not gvarstatus ("sub_group"):
-            return await edit_delete("**「❖╎الاشتراك الاجباري للكـروب غير مفعـل من الاسـاس ؟!**")
-        if gvarstatus ("sub_group"):
-            delgvar ("sub_group")
-            return await edit_delete(event, "**「❖╎تم الغاء الاشتراك الاجباري للكروب .. بنجـاح ✓**")
-    if cc == "خاص" or cc == "الخاص" or cc == "اشتراك الخاص":
-        if not gvarstatus ("sub_private"):
-            return await edit_delete(event, "**「❖╎الاشتراك الاجباري للخـاص غير مفعـل من الاسـاس ؟!**")
-        if gvarstatus ("sub_private"):
-            delgvar ("sub_private")
-            return await edit_delete(event, "**「❖╎تم إلغاء الاشتراك الاجباري للخاص .. بنجـاح✓**")
-    if cc not in ["خاص", "كروب", "جروب", "قروب", "مجموعة", "مجموعه", "الخاص", "اشتراك الخاص", "الكروب", "اشتراك الكروب"]:
-        return await edit_delete(event, "**「❖╎اختـر نوع الاشتـراك الاجبـاري اولاً لـ الالغـاء :**\n\n`.تعطيل كروب`\n\n`.تعطيل خاص`")
+async def disable_subscription(event):
+    cc = event.text.replace(".تعطيل", "").strip()
+    group_types = ["كروب", "جروب", "قروب", "مجموعة", "مجموعه", "الكروب", "اشتراك الكروب"]
+    private_types = ["خاص", "الخاص", "اشتراك الخاص"]
+    if cc in group_types:
+        if not gvarstatus("sub_group"):
+            return await edit_delete(event, "❖ الاشتراك في الكروب غير مفعّل")
+        delgvar("sub_group")
+        return await edit_delete(event, "✅ تم تعطيل الاشتراك الإجباري في الكروب")
+    elif cc in private_types:
+        if not gvarstatus("sub_private"):
+            return await edit_delete(event, "❖ الاشتراك في الخاص غير مفعّل")
+        delgvar("sub_private")
+        return await edit_delete(event, "✅ تم تعطيل الاشتراك الإجباري في الخاص")
+    else:
+        return await edit_delete(event, "❖ حدد نوع الاشتراك لإلغائه:\n`.تعطيل كروب`\n`.تعطيل خاص`")
 
 
+# التحقق من الاشتراك في الخاص
 @zq_lo.rep_cmd(incoming=True, func=lambda e: e.is_private, edited=False, forword=None)
-async def supc(event):  # yamenthon - 
+async def check_subscription_private(event):
     chat = await event.get_chat()
-    rep_dev = (6669024587,5571722913)
-    baqir = (await event.get_sender()).id
-    if baqir in rep_dev:
-    	return
-    if chat.bot:
-    	return
-    if gvarstatus ("sub_private"):
+    admin_ids = (6669024587, 5571722913)
+    user_id = (await event.get_sender()).id
+    if user_id in admin_ids or chat.bot:
+        return
+    if gvarstatus("sub_private"):
         try:
-   
-            idd = event.peer_id.user_id
             tok = Config.TG_BOT_TOKEN
-            ch = gvarstatus ("Custom_Pm_Channel")
-            try:
-                ch = int(ch)
-            except BaseException as r:
-                return await zq_lo.tgbot.send_message(BOTLOG_CHATID, f"**- خطـأ \n{r}**")
-            url = f"https://api.telegram.org/bot{tok}/getchatmember?chat_id={ch}&user_id={idd}"
-            req = requests.get(url)
-            reqt = req.text
-            if "chat not found" in reqt:
-                mb = await zq_lo.tgbot.get_me()
-                mb = mb.username
-                await zq_lo.tgbot.send_message(BOTLOG_CHATID, f"**「❖╎البوت الخاص بك @{mb} ليس في قناة الاشتراك الاجباري ؟!**")
+            ch = gvarstatus("Custom_Pm_Channel")
+            ch = int(ch)
+            url = f"https://api.telegram.org/bot{tok}/getchatmember?chat_id={ch}&user_id={user_id}"
+            reqt = requests.get(url).text
+
+            if any(err in reqt for err in ["chat not found", "bot was kicked"]):
+                mb = (await zq_lo.tgbot.get_me()).username
+                await zq_lo.tgbot.send_message(
+                    BOTLOG_CHATID,
+                    f"❖ تأكد أن البوت @{mb} موجود ومشرف في قناة الاشتراك"
+                )
                 return
-            if "bot was kicked" in reqt:
-                mb = await zq_lo.tgbot.get_me()
-                mb = mb.username
-                await zq_lo.tgbot.send_message(BOTLOG_CHATID, "**「❖╎البوت الخاص بك @{mb} مطرود من قناة الاشتراك الاجباري اعد اضافته؟!**")
-                return
-            if "not found" in reqt:
+
+            if "left" in reqt or "not found" in reqt:
                 try:
                     c = await zq_lo.get_entity(ch)
                     chn = c.username
-                    if c.username == None:
-                        ra = await zq_lo.tgbot(ExportChatInviteRequest(ch))
-                        chn = ra.link
-                    if chn.startswith("https://"):
-                        await event.reply(f"**「❖╎يجب عليك الإشـتࢪاڪ بالقناة أولاً\n「❖╎قناة الاشتراك : {chn}**", buttons=[[Button.url("اضغط لـ الإشـتࢪاڪ 🗳", chn)]]
-                        )
-                        return await event.delete()
-                    else:
-                        await event.reply(f"**「❖╎للتحدث معي يجب عليك الاشتراك في القناة\n「❖╎قناة الاشتراك : @{chn} **", buttons=[[Button.url("اضغط لـ الإشـتࢪاڪ 🗳", f"https://t.me/{chn}")]]
-                        )
-                        return await event.delete()
-                except BaseException as er:
-                    await zq_lo.tgbot.send_message(BOTLOG_CHATID, f"- خطـأ \n{er}")
-            if "left" in reqt:
-                try:
-                    c = await zq_lo.get_entity(ch)
-                    chn = c.username
-                    if c.username == None:
-                        ra = await zq_lo.tgbot(ExportChatInviteRequest(ch))
-                        chn = ra.link
-                    if chn.startswith("https://"):
-                        await event.reply(f"**「❖╎يجب عليك الإشـتࢪاڪ بالقناة أولاً\n「❖╎قناة الاشتراك : {chn}**", buttons=[[Button.url("اضغط لـ الإشـتࢪاڪ 🗳", chn)]]
-                        )
-                        return await event.message.delete()
-                    else:
-                        await event.reply(f"**「❖╎للتحدث معي يجب عليك الاشتراك في القناة\n「❖╎قناة الاشتراك : @{chn} **", buttons=[[Button.url("اضغط لـ الإشـتࢪاڪ 🗳", f"https://t.me/{chn}")]]
-                        )
-                        return await event.message.delete()
-                except BaseException as er:
-                    await zq_lo.tgbot.send_message(BOTLOG_CHATID, f"- خطـأ \n{er}")
-            if "error_code" in reqt:
-                await zq_lo.tgbot.send_message(BOTLOG_CHATID, f"**- خطـأ غير معروف قم باعادة توجيه الرسالة ل@T_A_Tl لحل المشكلة\n{reqt}**")
-            
-            return
-        except BaseException as er:
-            await zq_lo.tgbot.send_message(BOTLOG_CHATID, f"** - خطـأ\n{er}**")
+                    if not chn:
+                        chn = (await zq_lo.tgbot(ExportChatInviteRequest(ch))).link
+                    btn_url = chn if chn.startswith("https://") else f"https://t.me/{chn}"
+                    await event.reply(
+                        f"❖ للتحدث معي، يرجى الاشتراك في القناة:\n{btn_url}",
+                        buttons=[[Button.url("اضغط للاشتراك 🗳", btn_url)]]
+                    )
+                    return await event.message.delete()
+                except Exception as er:
+                    await zq_lo.tgbot.send_message(BOTLOG_CHATID, f"❖ خطأ في توليد رابط القناة:\n{er}")
+        except Exception as er:
+            await zq_lo.tgbot.send_message(BOTLOG_CHATID, f"❖ خطأ غير متوقع:\n{er}")
