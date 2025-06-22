@@ -50,7 +50,7 @@ async def _(event):
         REPTHON = [
             zlzzl
             async for zlzzl in event.client.iter_messages(
-                "@AA_Zll", filter=InputMessagesFilterVideo
+                "@TNTPQ", filter=InputMessagesFilterVideo
             )
         ]
         aing = await event.client.get_me()
