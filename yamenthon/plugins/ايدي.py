@@ -125,7 +125,7 @@ async def fetch_info(replied_user, event):
 ################# Dev yamenthon ################# 
     REP_TEXT = gvarstatus("CUSTOM_ALIVE_TEXT") or "•⎚• مـعلومـات المسـتخـدم مـن بـوت يـــمنثون"  #Code by T.me/T_A_Tl
     REPM = gvarstatus("CUSTOM_ALIVE_EMOJI") or "✦ " #Code by T.me/T_A_Tl
-    REPF = gvarstatus("CUSTOM_ALIVE_FONT") or "⋆─┄─┄─┄─ ᴿᴱᴾᵀᴴᴼᴺ ─┄─┄─┄─⋆" #Code by T.me/T_A_Tl
+    REPF = gvarstatus("CUSTOM_ALIVE_FONT") or "⋆─┄─┄┄─ 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉 ─┄┄─┄─⋆" #Code by T.me/T_A_Tl
     caption = f"<b> {REP_TEXT} </b>\n"
     caption += f"ٴ<b>{REPF}</b>\n"
     caption += f"<b>{REPM}الاسـم    ⇠ </b> "
