@@ -17,7 +17,7 @@ services:
         value: "25978936"
       - key: API_HASH
         value: "cf754dc655df0e7deff36732dbfff074"
-        - key: ALIVE_NAME
+      - key: ALIVE_NAME
         sync: false
       - key: ENV
         value: ANYTHING
@@ -28,7 +28,7 @@ services:
       - key: TZ
         value: Asia/Amman
       - key: PYTHON_VERSION
-        value: 3.10.9
+        value: "3.10.9"
       - key: DATABASE_URL
         fromDatabase:
           name: yamenthon
