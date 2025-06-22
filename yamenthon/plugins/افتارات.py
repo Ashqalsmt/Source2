@@ -22,7 +22,7 @@ from ..helpers.utils import _format
 from . import reply_id
 
 
-@zq_lo.rep_cmd(pattern="حالات$")
+@zq_lo.rep_cmd(pattern="حالات واتس$")
 async def _(event):
     repevent = await edit_or_reply(event, "**╮•⎚ جـارِ تحميـل حـالات واتـس ...**")
     try:
