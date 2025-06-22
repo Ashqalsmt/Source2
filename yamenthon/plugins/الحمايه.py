@@ -7,7 +7,7 @@ from telethon.events import CallbackQuery
 from telethon.utils import get_display_name
 
 from yamenthon import zq_lo
-from ..core.logger import logging
+from yamenthon.core.logger import logging
 
 from ..Config import Config
 from ..core.managers import edit_delete, edit_or_reply
@@ -91,13 +91,13 @@ async def do_pm_permit_action(event, chat):  # sourcery no-metrics
                 remwarns=remwarns,
             )
         else:
-            USER_BOT_WARN_ZERO = f"**⤶ لقـد حذرتـڪ مـسـبـقـاً مـن الـتـڪـرار 📵** \n**⤶ تـم حـظـرڪ تلقـائيـاً .. الان لا يـمـڪـنـڪ ازعـاجـي🔕**\n\n**⤶ تحيـاتـي** {my_mention}  🫡**"
+            USER_BOT_WARN_ZERO = f"**⤶ لقـد حذرتـڪ مـسـبـقًـا مـن الـتـڪـرار 📵** \n**⤶ تـم حـظـرڪ تلقـائيـاً .. الان لا يـمـڪـنـڪ ازعـاجـي🔕**\n\n**⤶ تحيـاتـي** {my_mention}  🫡**"
         msg = await event.reply(USER_BOT_WARN_ZERO)
         await event.client(functions.contacts.BlockRequest(chat.id))
         the_message = f"#حمـايـة_الخـاص\
-                            \n** 「❖╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
-                            \n** 「❖╎تم حظـره .. تلقائيـاً**\
-                            \n** 「❖╎عـدد رسـائله :** {PM_WARNS[str(chat.id)]}"
+                            \n**     ⃟⁞⃟⟢ ╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
+                            \n**     ⃟⁞⃟⟢ ╎تم حظـره .. تلقـــائــيـًا**\
+                            \n**     ⃟⁞⃟⟢ ╎عـدد رسـائله :** {PM_WARNS[str(chat.id)]}"
         del PM_WARNS[str(chat.id)]
         sql.del_collection("pmwarns")
         sql.del_collection("pmmessagecache")
@@ -129,25 +129,25 @@ async def do_pm_permit_action(event, chat):  # sourcery no-metrics
             remwarns=remwarns,
         )
     elif gvarstatus("pmmenu") is None:
-        USER_BOT_NO_WARN = f"""ᯓ 𝗦𝗢𝗨𝗥𝗖𝗘 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉 **- الـرد التلقـائي 〽️**
+        USER_BOT_NO_WARN = f"""ᯓ 𝗦𝗢𝗨𝗥𝗖𝗘 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉  **- الـرد التلقـائي 〽️**
 **•─────────────────•**
 
-❞ **مرحبـاً**  {mention} ❝
+❞ **مرحبًـا**  {mention} ❝
 
-**⤶ قد اكـون مشغـول او غيـر موجـود حـاليـاً ؟!**
-**⤶ ❨ لديـك** {warns} **مـن** {totalwarns} **تحذيـرات ⚠️❩**
-**⤶ لا تقـم بـ إزعاجـي والا سـوف يتم حظـرك تلقـائياً . . .**
+**⤶ قد اكـون مشغـول او غيـر موجـود حاليـًا ؟!**
+**⤶ ❨ لديـك** {warns} **مـن** {totalwarns} **تحذيـرات ‼️❩**
+**⤶ لا تقـم بـ إزعاجـي والا سـوف يتم حظـرك تلقائــيًا . . .**
 
 **⤶ فقط قل سبب مجيئك وانتظـر الـرد ⏳**"""
     else:
-        USER_BOT_NO_WARN = f"""ᯓ 𝗦𝗢𝗨𝗥𝗖𝗘 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉 **- الـرد التلقـائي 〽️**
+        USER_BOT_NO_WARN = f"""ᯓ 𝗦𝗢𝗨𝗥𝗖𝗘 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉  **- الـرد التلقـائي 〽️**
 **•─────────────────•**
 
-❞ **مرحبـاً**  {mention} ❝
+❞ **مرحبــًا**  {mention} ❝
 
-**⤶ قد اكـون مشغـول او غيـر موجـود حـاليـاً ؟!**
-**⤶ ❨ لديـك** {warns} **مـن** {totalwarns} **تحذيـرات ⚠️❩**
-**⤶ لا تقـم بـ إزعاجـي والا سـوف يتم حظـرك تلقـائياً . . .**
+**⤶ قد اكـون مشغـول او غيـر موجـود حالــيـًا ؟!**
+**⤶ ❨ لديـك** {warns} **مـن** {totalwarns} **تحذيـرات ‼️❩**
+**⤶ لا تقـم بـ إزعاجـي والا سـوف يتم حظـرك تلقائيـًا . . .**
 
 **⤶ فقط قل سبب مجيئك وانتظـر الـرد ⏳**"""
     addgvar("pmpermit_text", USER_BOT_NO_WARN)
@@ -223,14 +223,14 @@ async def do_pm_options_action(event, chat):
         LOGS.info(str(e))
     sql.del_collection("pmmessagecache")
     sql.add_collection("pmmessagecache", PMMESSAGE_CACHE, {})
-    USER_BOT_WARN_ZERO = "**⤶ لقـد حـذرتــڪ مـسـبـقـاً مـن تـڪـرار الـرسـائـل ...📵**\n**⤶ تـم حـظـرڪ تلقـائيـاً 🚷** \n**⤶ الـى ان يـاتـي مـالـڪ الـحـسـاب 😕**"
+    USER_BOT_WARN_ZERO = "**⤶ لقـد حـذرتــڪ مــسبــقًا مـن تـڪـرار الـرسـائـل ...📵**\n**⤶ تـم حـظـرڪ تلقـائيـاً 🚷** \n**⤶ الـى ان يـاتـي مـالـڪ الـحـسـاب 😕**"
 
     await event.reply(USER_BOT_WARN_ZERO)
     await event.client(functions.contacts.BlockRequest(chat.id))
     the_message = f"#حمـايـة_الخـاص\
-                            \n** 「❖╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
-                            \n** 「❖╎تم حظـره .. تلقائيـاً**\
-                            \n** 「❖╎السبب:** لم يختر أي من الخيارات المتاحـة واستمـر بتكـرار الرسـائـل ☹️😹."
+                            \n**     ⃟⁞⃟⟢ ╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
+                            \n**     ⃟⁞⃟⟢ ╎تم حظـره .. تـلـقـائيـًا**\
+                            \n**     ⃟⁞⃟⟢ ╎السبب:** لم يختر أي من الخيارات المتاحـة واستمـر بتكـرار الرسـائـل ☹️😹."
     sqllist.rm_from_list("pmoptions", chat.id)
     try:
         return await event.client.send_message(
@@ -275,9 +275,9 @@ async def do_pm_enquire_action(event, chat):
     await event.reply(USER_BOT_WARN_ZERO)
     await event.client(functions.contacts.BlockRequest(chat.id))
     the_message = f"#حمـايـة_الخـاص\
-                \n** 「❖╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
-                \n** 「❖╎تم حظـره .. تلقائيـاً**\
-                \n** 「❖╎السـبب:** لقد اختار خيار الاستفسار ولكنه لم ينتظر بعد أن تم إخباره واستمر بتكـرار الرسـائل 🥲😹."
+                \n**     ⃟⁞⃟⟢ ╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
+                \n**     ⃟⁞⃟⟢ ╎تم حظـره .. تلقــائيًا**\
+                \n**     ⃟⁞⃟⟢ ╎السـبب:** لقد اختار خيار الاستفسار ولكنه لم ينتظر بعد أن تم إخباره واستمر بتكـرار الرسـائل 🥲😹."
     sqllist.rm_from_list("pmenquire", chat.id)
     try:
         return await event.client.send_message(
@@ -322,9 +322,9 @@ async def do_pm_request_action(event, chat):
     await event.reply(USER_BOT_WARN_ZERO)
     await event.client(functions.contacts.BlockRequest(chat.id))
     the_message = f"#حمـايـة_الخـاص\
-                \n** 「❖╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
-                \n** 「❖╎تم حظـره .. تلقائيـاً**\
-                \n** 「❖╎السـبب:** لقد اختار خيار الطلب ولكنه لم ينتظر وتم حظره تلقائيـاً 🥲😹."
+                \n**     ⃟⁞⃟⟢ ╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
+                \n**     ⃟⁞⃟⟢ ╎تم حظـره .. تلقائــيًا**\
+                \n**     ⃟⁞⃟⟢ ╎السـبب:** لقد اختار خيار الطلب ولكنه لم ينتظر وتم حظره تلقائـيـًا 🥲😹."
     sqllist.rm_from_list("pmrequest", chat.id)
     try:
         return await event.client.send_message(
@@ -369,9 +369,9 @@ async def do_pm_chat_action(event, chat):
     await event.reply(USER_BOT_WARN_ZERO)
     await event.client(functions.contacts.BlockRequest(chat.id))
     the_message = f"#حمـايـة_الخـاص\
-                \n** 「❖╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
-                \n** 「❖╎تم حظـره .. تلقائيـاً**\
-                \n** 「❖╎السـبب:** لقد اختار خيار الدردشـه مع المالك ولكنه لم ينتظر وتم حظره تلقائيـاً 🥲😹."
+                \n**     ⃟⁞⃟⟢ ╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
+                \n**     ⃟⁞⃟⟢ ╎تم حظـره .. تلقائيًـا**\
+                \n**     ⃟⁞⃟⟢ ╎السـبب:** لقد اختار خيار الدردشـه مع المالك ولكنه لم ينتظر وتم حظره تــلـقائيـًا 🥲😹."
     sqllist.rm_from_list("pmchat", chat.id)
     try:
         return await event.client.send_message(
@@ -398,9 +398,9 @@ async def do_pm_spam_action(event, chat):
     await event.reply(USER_BOT_WARN_ZERO)
     await event.client(functions.contacts.BlockRequest(chat.id))
     the_message = f"#حمـايـة_الخـاص\
-                            \n** 「❖╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
-                            \n** 「❖╎تم حظـره .. تلقائيـاً**\
-                            \n** 「❖╎السـبب:** لقد اختار خيار ازعاج المالك واستمر بتكرار الرسائل وتم حظره تلقائيـاً 🥲😹."
+                            \n**     ⃟⁞⃟⟢ ╎المستخـدم** [{get_display_name(chat)}](tg://user?id={chat.id}) .\
+                            \n**     ⃟⁞⃟⟢ ╎تم حظـره .. تلقائيًا**\
+                            \n**     ⃟⁞⃟⟢ ╎السـبب:** لقد اختار خيار ازعاج المالك واستمر بتكرار الرسائل وتم حظره تلقائيـًا 🥲😹."
     sqllist.rm_from_list("pmspam", chat.id)
     sql.add_collection("pmmessagecache", PMMESSAGE_CACHE, {})
     try:
@@ -417,12 +417,12 @@ async def on_new_private_message(event):
     if gvarstatus("pmpermit") is None:
         return
     chat = await event.get_chat()
-    rep_dev = (6669024587)
+    zel_dev = (6669024587,6937025378)
     if chat.bot or chat.verified:
         return
     if pmpermit_sql.is_approved(chat.id):
         return
-    if event.chat_id in rep_dev:
+    if event.chat_id in zel_dev:
         reason = "**انـه احـد المطـورين المساعديـن 🥳♥️**"
         try:
             PM_WARNS = sql.get_collection("pmwarns").json
@@ -487,7 +487,6 @@ async def you_dm_other(event):
             f"{cmdhd}بلوك",
             f"{cmdhd}رفض",
             f"{cmdhd}قبول",
-            f"{cmdhd}سماح",
             f"{cmdhd}da",
             f"{cmdhd}سماح",
             f"{cmdhd}tempapprove",
@@ -651,36 +650,36 @@ async def pmpermit_on(event):
         if gvarstatus("pmpermit") is None:
             addgvar("pmpermit", "true")
             await edit_delete(
-                event, "**「❖╎تـم تفعيـل امـر حمايـه الخـاص .. بنجـاح 🔕☑️...**"
+                event, "**    ⃟⁞⃟⟢ ╎تـم تفعيـل امـر حمايـه الخـاص .. بنجـاح 🔕☑️...**"
             )
         else:
-            await edit_delete(event, "** 「❖╎ امـر حمايـه الخـاص بالفعـل .. مُفعـل  🔐✅**")
+            await edit_delete(event, "**     ⃟⁞⃟⟢ ╎ امـر حمايـه الخـاص بالفعـل .. مُفعـل  🔐✅**")
     elif gvarstatus("pmpermit") is not None:
         delgvar("pmpermit")
         await edit_delete(
-            event, "**「❖╎تـم تعطيـل أمـر حمايـة الخـاص .. بنجـاح 🔔☑️...**"
+            event, "**    ⃟⁞⃟⟢ ╎تـم تعطيـل أمـر حمايـة الخـاص .. بنجـاح 🔔☑️...**"
         )
     else:
-        await edit_delete(event, "** 「❖╎ امـر حمايـه الخـاص بالفعـل .. مُعطـل 🔓✅**")
+        await edit_delete(event, "**     ⃟⁞⃟⟢ ╎ امـر حمايـه الخـاص بالفعـل .. مُعطـل 🔓✅**")
     if input_str == "تعطيل":
         if gvarstatus("pmmenu") is None:
             addgvar("pmmenu", "false")
             await edit_delete(
                 event,
-                "**「❖╎تـم تعطيـل أمـر حمايـة الخـاص .. بنجـاح 🔔☑️...**",
+                "**    ⃟⁞⃟⟢ ╎تـم تعطيـل أمـر حمايـة الخـاص .. بنجـاح 🔔☑️...**",
             )
         else:
             await edit_delete(
-                event, "** 「❖╎ امـر حمايـه الخـاص بالفعـل .. مُعطـل 🔓✅**"
+                event, "**     ⃟⁞⃟⟢ ╎ امـر حمايـه الخـاص بالفعـل .. مُعطـل 🔓✅**"
             )
     elif gvarstatus("pmmenu") is not None:
         delgvar("pmmenu")
         await edit_delete(
-            event, "**「❖╎تـم تفعيـل امـر حمايـه الخـاص .. بنجـاح 🔕☑️...**"
+            event, "**    ⃟⁞⃟⟢ ╎تـم تفعيـل امـر حمايـه الخـاص .. بنجـاح 🔕☑️...**"
         )
     else:
         await edit_delete(
-            event, "** 「❖╎ امـر حمايـه الخـاص بالفعـل .. مُفعـل  🔐✅**"
+            event, "**     ⃟⁞⃟⟢ ╎ امـر حمايـه الخـاص بالفعـل .. مُفعـل  🔐✅**"
         )
 
 @zq_lo.rep_cmd(
@@ -698,36 +697,36 @@ async def pmpermit_on(event):
         if gvarstatus("pmpermit") is None:
             addgvar("pmpermit", "true")
             await edit_delete(
-                event, "**「❖╎تـم تفعيـل امـر حمايـه الخـاص .. بنجـاح 🔕☑️...**"
+                event, "**    ⃟⁞⃟⟢ ╎تـم تفعيـل امـر حمايـه الخـاص .. بنجـاح 🔕☑️...**"
             )
         else:
-            await edit_delete(event, "** 「❖╎ امـر حمايـه الخـاص بالفعـل .. مُفعـل  🔐✅**")
+            await edit_delete(event, "**     ⃟⁞⃟⟢ ╎ امـر حمايـه الخـاص بالفعـل .. مُفعـل  🔐✅**")
     elif gvarstatus("pmpermit") is not None:
         delgvar("pmpermit")
         await edit_delete(
-            event, "**「❖╎تـم تعطيـل أمـر حمايـة الخـاص .. بنجـاح 🔔☑️...**"
+            event, "**    ⃟⁞⃟⟢ ╎تـم تعطيـل أمـر حمايـة الخـاص .. بنجـاح 🔔☑️...**"
         )
     else:
-        await edit_delete(event, "** 「❖╎ امـر حمايـه الخـاص بالفعـل .. مُعطـل 🔓✅**")
+        await edit_delete(event, "**     ⃟⁞⃟⟢ ╎ امـر حمايـه الخـاص بالفعـل .. مُعطـل 🔓✅**")
     if input_str == "تعطيل":
         if gvarstatus("pmmenu") is None:
             addgvar("pmmenu", "false")
             await edit_delete(
                 event,
-                "**「❖╎تـم تعطيـل أمـر حمايـة الخـاص .. بنجـاح 🔔☑️...**",
+                "**    ⃟⁞⃟⟢ ╎تـم تعطيـل أمـر حمايـة الخـاص .. بنجـاح 🔔☑️...**",
             )
         else:
             await edit_delete(
-                event, "** 「❖╎ امـر حمايـه الخـاص بالفعـل .. مُعطـل 🔓✅**"
+                event, "**     ⃟⁞⃟⟢ ╎ امـر حمايـه الخـاص بالفعـل .. مُعطـل 🔓✅**"
             )
     elif gvarstatus("pmmenu") is not None:
         delgvar("pmmenu")
         await edit_delete(
-            event, "**「❖╎تـم تفعيـل امـر حمايـه الخـاص .. بنجـاح 🔕☑️...**"
+            event, "**    ⃟⁞⃟⟢ ╎تـم تفعيـل امـر حمايـه الخـاص .. بنجـاح 🔕☑️...**"
         )
     else:
         await edit_delete(
-            event, "** 「❖╎ امـر حمايـه الخـاص بالفعـل .. مُفعـل  🔐✅**"
+            event, "**     ⃟⁞⃟⟢ ╎ امـر حمايـه الخـاص بالفعـل .. مُفعـل  🔐✅**"
         )
 
 
@@ -747,7 +746,7 @@ async def approve_p_m(event):  # sourcery no-metrics
     if gvarstatus("pmpermit") is None:
         return await edit_delete(
             event,
-            f"** 「❖╎لـيشتغل هذا الأمـر ...**\n** 「❖╎ يـجب تفعيـل امـر الحـمايـه اولاً **\n** 「❖╎بإرسـال** `{cmdhd}الحمايه تفعيل`",
+            f"**     ⃟⁞⃟⟢ ╎لـيشتغل هذا الأمـر ...**\n**     ⃟⁞⃟⟢ ╎ يـجب تفعيـل امـر الحـمايـه اولاً **\n**     ⃟⁞⃟⟢ ╎بإرسـال** `{cmdhd}الحمايه تفعيل`",
         )
     if event.is_private:
         user = await event.get_chat()
@@ -757,7 +756,7 @@ async def approve_p_m(event):  # sourcery no-metrics
         if not user:
             return
     if not reason:
-        reason = "**「❖╎لـم يـذكـر 🤷🏻‍♂**"
+        reason = "**    ⃟⁞⃟⟢ ╎لـم يـذكـر 🤷🏻‍♂**"
     try:
         PM_WARNS = sql.get_collection("pmwarns").json
     except AttributeError:
@@ -782,7 +781,7 @@ async def approve_p_m(event):  # sourcery no-metrics
             sqllist.rm_from_list("pmoptions", chat.id)
         await edit_delete(
             event,
-            f"**「❖╎المستخـدم**  [{user.first_name}](tg://user?id={user.id})\n**「❖╎تـم السـمـاح لـه بـإرسـال الـرسـائـل 💬✓** \n **「❖╎ الـسـبـب ❔  :** {reason}",
+            f"**    ⃟⁞⃟⟢ ╎المستخـدم**  [{user.first_name}](tg://user?id={user.id})\n**    ⃟⁞⃟⟢ ╎تـم السـمـاح لـه بـإرسـال الـرسـائـل 💬✓** \n **    ⃟⁞⃟⟢ ╎ الـسـبـب ❔  :** {reason}",
         )
         try:
             PMMESSAGE_CACHE = sql.get_collection("pmmessagecache").json
@@ -803,7 +802,7 @@ async def approve_p_m(event):  # sourcery no-metrics
     else:
         await edit_delete(
             event,
-            f"**「❖╎المستخـدم** [{user.first_name}](tg://user?id={user.id}) \n**「❖╎هـو بـالـفـعل فـي قـائـمـة الـسـمـاح ✅**",
+            f"**    ⃟⁞⃟⟢ ╎المستخـدم** [{user.first_name}](tg://user?id={user.id}) \n**    ⃟⁞⃟⟢ ╎هـو بـالـفـعل فـي قـائـمـة الـسـمـاح ✅**",
         )
 
 
@@ -824,7 +823,7 @@ async def tapprove_pm(event):  # sourcery no-metrics
     if gvarstatus("pmpermit") is None:
         return await edit_delete(
             event,
-            f"** 「❖╎لـيشتغل هذا الأمـر ...**\n** 「❖╎ يـجب تفعيـل امـر الحـمايـه اولاً **\n** 「❖╎بإرسـال** `{cmdhd}الحمايه تفعيل`",
+            f"**     ⃟⁞⃟⟢ ╎لـيشتغل هذا الأمـر ...**\n**     ⃟⁞⃟⟢ ╎ يـجب تفعيـل امـر الحـمايـه اولاً **\n**     ⃟⁞⃟⟢ ╎بإرسـال** `{cmdhd}الحمايه تفعيل`",
         )
     if event.is_private:
         user = await event.get_chat()
@@ -834,7 +833,7 @@ async def tapprove_pm(event):  # sourcery no-metrics
         if not user:
             return
     if not reason:
-        reason = "**「❖╎لـم يـذكـر 🤷🏻‍♂**"
+        reason = "**    ⃟⁞⃟⟢ ╎لـم يـذكـر 🤷🏻‍♂**"
     try:
         PM_WARNS = sql.get_collection("pmwarns").json
     except AttributeError:
@@ -858,7 +857,7 @@ async def tapprove_pm(event):  # sourcery no-metrics
             sqllist.rm_from_list("pmoptions", chat.id)
         await edit_delete(
             event,
-            f"**「❖╎المستخـدم**  [{user.first_name}](tg://user?id={user.id}) is __temporarily approved to pm__\n**Reason :** __{reason}__",
+            f"**    ⃟⁞⃟⟢ ╎المستخـدم**  [{user.first_name}](tg://user?id={user.id}) is __temporarily approved to pm__\n**Reason :** __{reason}__",
         )
         try:
             PMMESSAGE_CACHE = sql.get_collection("pmmessagecache").json
@@ -879,12 +878,12 @@ async def tapprove_pm(event):  # sourcery no-metrics
     elif pmpermit_sql.is_approved(user.id):
         await edit_delete(
             event,
-            f"**「❖╎المستخـدم**  [{user.first_name}](tg://user?id={user.id}) __is in approved list__",
+            f"**    ⃟⁞⃟⟢ ╎المستخـدم**  [{user.first_name}](tg://user?id={user.id}) __is in approved list__",
         )
     else:
         await edit_delete(
             event,
-            f"**「❖╎المستخـدم**  [{user.first_name}](tg://user?id={user.id}) __is already in temporary approved list__",
+            f"**    ⃟⁞⃟⟢ ╎المستخـدم**  [{user.first_name}](tg://user?id={user.id}) __is already in temporary approved list__",
         )
 
 
@@ -906,7 +905,7 @@ async def disapprove_p_m(event):
     if gvarstatus("pmpermit") is None:
         return await edit_delete(
             event,
-            f"** 「❖╎لـيشتغل هذا الأمـر ...**\n** 「❖╎ يـجب تفعيـل امـر الحـمايـه اولاً **\n** 「❖╎بإرسـال** `{cmdhd}الحمايه تفعيل`",
+            f"**     ⃟⁞⃟⟢ ╎لـيشتغل هذا الأمـر ...**\n**     ⃟⁞⃟⟢ ╎ يـجب تفعيـل امـر الحـمايـه اولاً **\n**     ⃟⁞⃟⟢ ╎بإرسـال** `{cmdhd}الحمايه تفعيل`",
         )
     if event.is_private:
         user = await event.get_chat()
@@ -921,26 +920,26 @@ async def disapprove_p_m(event):
     if reason == "الكل":
         pmpermit_sql.disapprove_all()
         return await edit_delete(
-            event, "**「❖╎حــسـنـا تــم رفـض الـجـمـيـع .. بنجـاح 💯**"
+            event, "**    ⃟⁞⃟⟢ ╎حــسـنـا تــم رفـض الـجـمـيـع .. بنجـاح 💯**"
         )
     if not reason:
-        reason = "**「❖╎ لـم يـذكـر 💭**"
+        reason = "**    ⃟⁞⃟⟢ ╎ لـم يـذكـر 💭**"
     if pmpermit_sql.is_approved(user.id):
         pmpermit_sql.disapprove(user.id)
         await edit_or_reply(
             event,
-            f"**「❖╎المستخـدم**  [{user.first_name}](tg://user?id={user.id})\n**「❖╎تـم رفـضـه مـن أرسـال الـرسـائـل ⚠️**\n**「❖╎ الـسـبـب ❔  :** {reason}",
+            f"**    ⃟⁞⃟⟢ ╎المستخـدم**  [{user.first_name}](tg://user?id={user.id})\n**    ⃟⁞⃟⟢ ╎تـم رفـضـه مـن أرسـال الـرسـائـل ⚠️**\n**    ⃟⁞⃟⟢ ╎ الـسـبـب ❔  :** {reason}",
         )
     elif user.id in PMPERMIT_.TEMPAPPROVED:
         PMPERMIT_.TEMPAPPROVED.remove(user.id)
         await edit_or_reply(
             event,
-            f"**「❖╎المستخـدم**  [{user.first_name}](tg://user?id={user.id})\n**「❖╎تـم رفـضـه مـن أرسـال الـرسـائـل ⚠️**\n**「❖╎ الـسـبـب ❔  :** {reason}",
+            f"**    ⃟⁞⃟⟢ ╎المستخـدم**  [{user.first_name}](tg://user?id={user.id})\n**    ⃟⁞⃟⟢ ╎تـم رفـضـه مـن أرسـال الـرسـائـل ⚠️**\n**    ⃟⁞⃟⟢ ╎ الـسـبـب ❔  :** {reason}",
         )
     else:
         await edit_delete(
             event,
-            f"**「❖╎المستخـدم**  [{user.first_name}](tg://user?id={user.id})\n **「❖╎لــم تـتـم الـمـوافـقـة عـلـيـه مـسـبـقـاً ❕ **",
+            f"**    ⃟⁞⃟⟢ ╎المستخـدم**  [{user.first_name}](tg://user?id={user.id})\n **    ⃟⁞⃟⟢ ╎لــم تـتـم الـمـوافـقـة عـلـيـه مـسـبـقـاً ❕ **",
         )
 
 
@@ -954,7 +953,7 @@ async def block_p_m(event):
         if not user:
             return
     if not reason:
-        reason = "**「❖╎ لـم يـذكـر 💭**"
+        reason = "**    ⃟⁞⃟⟢ ╎ لـم يـذكـر 💭**"
     try:
         PM_WARNS = sql.get_collection("pmwarns").json
     except AttributeError:
@@ -994,7 +993,7 @@ async def unblock_pm(event):
         if not user:
             return
     if not reason:
-        reason = "**「❖╎ لـم يـذكـر 💭**"
+        reason = "**    ⃟⁞⃟⟢ ╎ لـم يـذكـر 💭**"
     await event.client(functions.contacts.UnblockRequest(user.id))
     await edit_or_reply(
         event,
@@ -1007,7 +1006,7 @@ async def approve_p_m(event):
     if gvarstatus("pmpermit") is None:
         return await edit_delete(
             event,
-            f"** 「❖╎لـيشتغل هذا الأمـر ...**\n** 「❖╎ يـجب تفعيـل امـر الحـمايـه اولاً **\n** 「❖╎بإرسـال** `{cmdhd}الحمايه تفعيل`",
+            f"**     ⃟⁞⃟⟢ ╎لـيشتغل هذا الأمـر ...**\n**     ⃟⁞⃟⟢ ╎ يـجب تفعيـل امـر الحـمايـه اولاً **\n**     ⃟⁞⃟⟢ ╎بإرسـال** `{cmdhd}الحمايه تفعيل`",
         )
     approved_users = pmpermit_sql.get_all_approved()
     APPROVED_PMs = "**- قائمـة المسمـوح لهـم ( المقبـوليـن ) :**\n\n"
@@ -1020,5 +1019,5 @@ async def approve_p_m(event):
         event,
         APPROVED_PMs,
         file_name="قائمـة الحمايـة.txt",
-        caption="**- ️قائمـة المسمـوح لهـم ( المقبوليـن )**\n\n**- سـورس يـــمنثون** 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉",
+        caption="𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉 المسمـوح لهـم ( المقبوليـن )**\n\n**- سـورس يمنثون ** 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉 ",
     )
