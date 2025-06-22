@@ -18,7 +18,7 @@ from ..helpers.functions import repalive, check_data_base_heal_th, get_readable_
 from ..helpers.utils import reply_id
 from ..sql_helper.globals import gvarstatus
 
-HELP = f"**🧑🏻‍💻┊مـࢪحبـاً عـزيـزي {mention}**\n**🛂┊في قائمـة المسـاعـده والشـروحـات\n🛃┊من هنـا يمكنـك ايجـاد شـرح لكـل اوامـر السـورس**\n\n[ᯓ 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉 ♥️](t.me/YamenThon)\n\n"
+HELP = f"**🧑🏻‍💻┊مـࢪحبـاً عـزيـزي {mention}**\n**🧧┊في قائمـة المسـاعـده والشـروحـات\n🛃┊من هنـا يمكنـك ايجـاد شـرح لكـل اوامـر السـورس**\n\n[ᯓ 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉 ♥️](t.me/YamenThon)\n\n"
 
 rep_temp = """
 ┏───────────────┓
@@ -47,31 +47,31 @@ if Config.TG_BOT_USERNAME is not None and tgbot is not None:
         if query.startswith("مساعده") and event.query.user_id == zq_lo.uid:
             buttons = [
                 [Button.inline("𝗦𝗼𝘂𝗿𝗰𝗲 𝙔𝘼𝙈𝙀𝙉𝙏𝙃𝙊𝙉", data="BAQIR")],
-                [Button.inline("البـحـث والتحميـل 🪄", data="zdownload")],
+                [Button.inline("⫹⫺البـحـث والتحميـل⫹⫺", data="zdownload")],
                 [
-                    Button.inline("البـوت 🤖", data="botvr"),
-                    Button.inline("الحساب🎗", data="acccount"),
+                    Button.inline("⫹⫺البـوت⫹⫺", data="botvr"),
+                    Button.inline("⫹⫺الحساب⫹⫺", data="acccount"),
                 ],
                 [
-                    Button.inline("المكالمات & الميـوزك 🎙🎸", data="zmusic"),
+                    Button.inline("⫹⫺المكالمات & الميـوزك⫹⫺", data="zmusic"),
                 ],
                 [
-                    Button.inline("المجمـوعـة 🛗", data="groupvr"),
-                    Button.inline(" الفـارات 🛂", data="varszed"),
+                    Button.inline("⫹⫺المجمـوعـة⫹⫺", data="groupvr"),
+                    Button.inline("⫹⫺الفـارات⫹⫺", data="varszed"),
                 ],
                 [
-                    Button.inline("التسليـه والتحشيش 🎃", data="funzed"),
+                    Button.inline("⫹⫺التسليـه والتحشيش⫹⫺", data="funzed"),
                 ],
                 [
-                    Button.inline("المرفقـات 🪁", data="extras"),
-                    Button.inline("الادوات 💡", data="toolzed"),
+                    Button.inline("⫹⫺المرفقـات⫹⫺", data="extras"),
+                    Button.inline("⫹⫺الادوات⫹⫺", data="toolzed"),
                 ],
                 [
-                    Button.inline("الذكـاء الاصطنـاعـي 🛸", data="zchatgpt"),
+                    Button.inline("⫹⫺الذكـاء الاصطنـاعـي⫹⫺", data="zchatgpt"),
                 ],
                 [
-                    Button.inline("السوبـرات 🎡", data="superrrr"),
-                    Button.inline("التجميـع 🛗", data="pointrrr"),
+                    Button.inline("⫹⫺السوبـرات⫹⫺", data="superrrr"),
+                    Button.inline("⫹⫺التجميـع⫹⫺", data="pointrrr"),
                 ],
             ]
             result = builder.article(
