@@ -173,7 +173,7 @@ async def mybot(): #Code by T.me/T_A_Tl
             await asyncio.sleep(1)
             await bot.send_message("@BotFather", botname)
             await asyncio.sleep(1)
-            await bot.send_message("@BotFather", f"•⎆┊انـا البــوت المسـاعـد الخــاص بـ {ba_qir} \n•⎆┊بـواسطـتـي يمكـنك التواصــل مـع مـالكـي 🧸♥️\n•⎆┊قنـاة السـورس 🌐 @Repthon 🌐")
+            await bot.send_message("@BotFather", f"•⎆┊انـا البــوت المسـاعـد الخــاص بـ {ba_qir} \n•⎆┊بـواسطـتـي يمكـنك التواصــل مـع مـالكـي ✨️♥️\n•⎆┊قنـاة السـورس 🌐 @YamenThon 🌐")
         except Exception as e:
             print(e)
 
