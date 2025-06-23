@@ -4174,7 +4174,7 @@ async def _(event):
 `.طقس`   **+ مدينـه**
 
 **- مثـال :**
-`.طقس بغداد`""",
+`.طقس صنعاء`""",
         buttons=[
             [Button.inline("رجوع", data="nexttools")],
         ],
