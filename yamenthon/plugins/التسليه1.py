@@ -49,7 +49,7 @@ async def _(event):
                 await asyncio.sleep(animation_interval)
                 await event.edit(animation_chars[i % 11])
     else:
-        await edit_or_reply(event, "No User is Defined\n Can't hack account")
+        await edit_or_reply(event, "**☆يجب الرد على المستخدم**\n **لكي تتمكن من إختراقه**")
 
 
 love = [
