@@ -69,7 +69,6 @@ async def steal_identity(event):
         if not gvarstatus("ORIGINAL_FIRST_NAME"):
             await save_original_data(event)
         
-        # بقية كود الانتحال...
         user_id = replied_user.id
         first_name = html.escape(replied_user.first_name or "")
         first_name = first_name.replace("\u2060", "") if first_name else ""
@@ -79,31 +78,47 @@ async def steal_identity(event):
         full_user = (await event.client(GetFullUserRequest(user_id))).full_user
         user_bio = full_user.about or ""
         
-        profile_pic = await event.client.download_profile_photo(
-            user_id, 
-            Config.TEMP_DIR + str(user_id) + ".jpg"
-        )
+        # إنشاء المسار المؤقت إذا لم يكن موجوداً
+        os.makedirs(Config.TEMP_DIR, exist_ok=True)
+        profile_pic_path = os.path.join(Config.TEMP_DIR, f"{user_id}.jpg")
         
+        # تحميل الصورة الشخصية
+        pic_msg = ""
+        try:
+            # جلب جميع الصور الشخصية للمستخدم
+            photos = await event.client.get_profile_photos(user_id, limit=1)
+            if photos:
+                # تحميل أحدث صورة شخصية
+                await event.client.download_profile_photo(
+                    user_id,
+                    file=profile_pic_path,
+                    download_big=True
+                )
+                
+                # رفع الصورة الجديدة
+                if os.path.exists(profile_pic_path):
+                    pfile = await event.client.upload_file(profile_pic_path)
+                    await event.client(functions.photos.UploadProfilePhotoRequest(pfile))
+                    pic_msg = "مع الصورة الشخصية"
+                    
+                    # حذف الصورة المؤقتة
+                    try:
+                        os.remove(profile_pic_path)
+                    except:
+                        pass
+                else:
+                    pic_msg = "فشل في تحميل الصورة الشخصية"
+            else:
+                pic_msg = "الحساب ليس لديه صورة شخصية"
+        except Exception as e:
+            pic_msg = f"فشل في تحديث الصورة: {str(e)}"
+        
+        # تحديث الاسم والبايو
         await event.client(functions.account.UpdateProfileRequest(
             first_name=first_name,
             last_name=last_name,
             about=user_bio
         ))
-        
-        pic_msg = ""
-        if profile_pic:
-            try:
-                pfile = await event.client.upload_file(profile_pic)
-                await event.client(functions.photos.UploadProfilePhotoRequest(pfile))
-                pic_msg = "مع الصورة الشخصية"
-                try:
-                    os.remove(profile_pic)
-                except:
-                    pass
-            except Exception as e:
-                pic_msg = f"لكن فشل تحديث الصورة: {str(e)}"
-        else:
-            pic_msg = "بدون صورة (الحساب ليس لديه صورة شخصية)"
         
         success_msg = (
             f"**「❖╎تم انتحال الشخص بنجاح ༗**\n"
@@ -123,31 +138,4 @@ async def steal_identity(event):
             
     except Exception as e:
         error_msg = f"**⛔ حدث خطأ أثناء الانتحال:**\n`{str(e)}`"
-        await edit_delete(event, error_msg, time=20)
-
-@zq_lo.rep_cmd(pattern=f"{ANTHAL}$")
-async def revert_identity(event):
-    try:
-        if gvarstatus("ORIGINAL_FIRST_NAME"):
-            first_name, last_name, bio = await restore_original_data(event)
-            
-            success_msg = (
-                "**「❖╎تمت إعادة الحساب إلى وضعه الأصلي بنجاح ✅**\n"
-                f"**• الاسم:** {first_name}\n"
-                f"**• البايو:** `{bio[:50]}...`"
-            )
-            await edit_delete(event, success_msg, time=30)
-            
-            if BOTLOG:
-                log_msg = (
-                    "#الغـاء_الانتحـال\n"
-                    "**⪼ تم الغـاء الانتحـال بنجـاح ✅**\n"
-                    "**⪼ تم إعـادة معلوماتك الأصلية**"
-                )
-                await event.client.send_message(BOTLOG_CHATID, log_msg)
-        else:
-            await edit_delete(event, "**⚠️ لا يوجد بيانات محفوظة للإعادة!**", time=10)
-            
-    except Exception as e:
-        error_msg = f"**⛔ حدث خطأ أثناء الإعادة:**\n`{str(e)}`"
         await edit_delete(event, error_msg, time=20)
