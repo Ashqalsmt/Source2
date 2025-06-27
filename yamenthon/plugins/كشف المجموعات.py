@@ -9,7 +9,7 @@ from emoji import emojize
 from math import sqrt
 
 from yamenthon import zq_lo
-
+plugin_category = "الادمن"
 
 @zq_lo.rep_cmd(pattern="كشف المجموعة(?: |$)(.*)")
 async def info_group(event):
