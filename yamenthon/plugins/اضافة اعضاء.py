@@ -105,7 +105,7 @@ async def get_users(event):
                 functions.channels.InviteToChannelRequest(channel=chat, users=[user.id])
             )
             s = s + 1
-            await asyncio.sleep(4)  # ← انتظر ثانيتين قبل إضافة الشخص التالي
+            await asyncio.sleep(8)  # ← انتظر ثانيتين قبل إضافة الشخص التالي
             await eva.edit(
                 f"**╮ جـاري الإضـافـه...⧑**\n\n• تـم اضافـة `{s}` \n•  خـطأ بإضافـة `{f}` \n\n**× آخـر خـطأ:** `{error}`"
             )
