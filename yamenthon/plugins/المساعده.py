@@ -999,7 +999,7 @@ async def _(event):
             [Button.inline("رجوع", data="groupvr")],
         ],
     link_preview=False)
- @zq_lo.tgbot.on(CallbackQuery(data=re.compile(rb"group6vr")))
+@zq_lo.tgbot.on(CallbackQuery(data=re.compile(rb"group6vr")))
 @check_owner
 async def _(event):
     await event.edit(
