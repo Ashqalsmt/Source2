@@ -867,6 +867,8 @@ async def _(event):
                 ],
                 [
                     Button.inline("الــردود", data="group5vr"),
+                [
+                    Button.inline("كشف المجوعات", data="group6vr"),
                 ],
                 [Button.inline("رجــوع", data="ZEDHELP")],
             ],
@@ -996,6 +998,20 @@ async def _(event):
             [Button.inline("رجوع", data="groupvr")],
         ],
     link_preview=False)
+ @zq_lo.tgbot.on(CallbackQuery(data=re.compile(rb"group6vr")))
+@check_owner
+async def _(event):
+    await event.edit(
+        """**- الامـر :**
+**⪼** `.كشف المجموعة`
+
+
+**- الوصـف :**
+لـ كشف المجموعة وجميع معلومات وتفاصيـل المجموعـة ارسل الامر داخل اي مجموعه """,
+        buttons=[
+            [Button.inline("رجوع", data="groupvr")],
+        ],
+    link_preview=False)   
 
 @zq_lo.tgbot.on(CallbackQuery(data=re.compile(rb"group1vr")))
 @check_owner
