@@ -10,6 +10,27 @@ from telethon import functions
 from telethon.errors.rpcerrorlist import MessageIdInvalidError
 from yamenthon.utils import admin_cmd
 
+@zq_lo.on(admin_cmd(pattern="ايقاف الخطوط"))
+async def stop_all_fonts(event):
+    removed = []
+
+    if gvarstatus("bold"):
+        delgvar("bold")
+        removed.append("الغامق")
+    if gvarstatus("ramz"):
+        delgvar("ramz")
+        removed.append("الرمز")
+    if gvarstatus("tshwesh"):
+        delgvar("tshwesh")
+        removed.append("المشطوب")
+    if gvarstatus("italic"):
+        delgvar("italic")
+        removed.append("المائل")
+
+    if removed:
+        await edit_delete(event, f"**❖╎ تم إيقاف الخطوط التالية: {'، '.join(removed)} ✓**")
+    else:
+        await edit_delete(event, "**❖╎ لا توجد أي خطوط مفعلة لإيقافها ✓**")
 
 @zq_lo.on(admin_cmd(pattern="(خط الغامق|خط غامق)"))
 async def btext(event):
